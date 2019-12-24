@@ -1,10 +1,11 @@
 <template>
   <div>
-    <h1>Home</h1>
+    <Carousel />
   </div>
 </template>
 
 <script>
+  import Carousel from '../components/Carousel'
   export default {
     data () {
       return {
@@ -13,6 +14,9 @@
     },
     methods: {
 
+    },
+    components: {
+      Carousel
     }
   }
 </script>

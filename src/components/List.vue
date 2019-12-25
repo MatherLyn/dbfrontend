@@ -7,7 +7,6 @@
         </el-button>
         <el-dropdown-menu slot="dropdown">
           <el-dropdown-item command="id">编号</el-dropdown-item>
-          <el-dropdown-item command="name">名称</el-dropdown-item>
         </el-dropdown-menu>
       </el-dropdown>
       <el-input
@@ -17,7 +16,7 @@
         clearable
         class="product-input">
       </el-input>
-      <el-button type="primary" icon="el-icon-search" @click="doFilter">查找</el-button>
+      <el-button type="primary" icon="el-icon-search" @click="doFilter" class="search-btn">查找</el-button>
     </div>
     <el-table :data="showData">
       <el-table-column prop="id" label="编号" fixed="left"></el-table-column>
@@ -37,6 +36,10 @@
       <el-table-column prop="username" label="用户名" v-if="type==3"></el-table-column>
       <el-table-column prop="password" label="密码" v-if="type==3"></el-table-column>
       <el-table-column prop="email" label="电子邮箱" v-if="type==3"></el-table-column>
+      <!--type是4时，显示的是用户的订单信息-->
+      <el-table-column prop="built_time" label="创建时间" v-if="type==4"></el-table-column>
+      <el-table-column prop="status" label="状态" v-if="type==4"></el-table-column>
+      <el-table-column prop="ticket_id" label="车票编号" v-if="type==4"></el-table-column>
       <el-table-column
         fixed="right"
         prop="manipulation"
@@ -66,17 +69,18 @@
     ],
     data () {
       return {
+        // 页面显示的字
         curCheck: '编号',
+        // 实际要搜索的item
         check: 'id',
+        // 输入框输入的值
         checkValue: '',
+        // 用以切换过滤模式
+        // 处于filtering模式时，列表长度变为showData的长度
+        // 否则列表长度为tableData的长度
         search: '',
         tableData: [],
         showData: [],
-        showId: '',
-        showType: '',
-        showModel: '',
-        showStock: '',
-        showMsg: '',
         curSize: 10,
         curPage: 1,
         filtering: false
@@ -87,10 +91,6 @@
         switch (command) {
           case 'id': {
             this.curCheck = '编号'
-            break;
-          }
-          case 'name': {
-            this.curCheck = '名称'
             break;
           }
         }
@@ -116,20 +116,6 @@
       },
       checkItem (row) {
         const id = parseInt(row.id)
-        // this.axios.get(`/api/     id=${id}`)
-        // .then(response => {
-        //   const responseData = response.data
-        //   if (!responseData.code) {
-        //     this.showMsg = responseData.status
-        //     return
-        //   }
-        //   this.showMsg = ''
-        //   this.showId = responseData.id
-        //   this.showType = responseData.type
-        //   this.showModel = responseData.model
-        //   this.showStock = responseData.stock
-        //   this.popup = true
-        // })
       },
       deleteItem (row) {
         this.workPiece.id = parseInt(row.id)
@@ -179,5 +165,9 @@
 
   .product-input {
     margin: 0 2rem;
+  }
+
+  .search-btn {
+    width: 200px !important;
   }
 </style>

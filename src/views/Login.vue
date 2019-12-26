@@ -8,7 +8,7 @@
         </div>
         <div class="form-item">
           <label for="username">用户名</label>
-          <el-input type="text" id="username" prefix-icon="el-icon-user" v-model="user.name" class="larger-input"></el-input>
+          <el-input type="text" id="username" prefix-icon="el-icon-user" v-model="user.username" class="larger-input"></el-input>
         </div>
         <div class="form-item">
           <label for="password">密码</label>
@@ -18,11 +18,11 @@
           <router-link to="/register" style="float: left; color: black;">注册账号</router-link>
           <router-link to="/modifypassword" style="float: right; color: black;">忘记密码？</router-link>
         </div>
-        <div class="form-item" style="margin-bottom: 0;" v-show="msg">
+        <div class="form-item" style="margin-bottom: 20px;" v-show="msg">
           <span class="tips">* </span><span>{{msg}}</span>
         </div>
         <div class="form-item">
-          <el-button type="primary" class="submit-button" @click="onSubmit">提交</el-button>
+          <el-button type="primary" class="submit-button" @click="onSubmit" :disabled="!user.username || !user.password">提交</el-button>
         </div>
       </div>
     </div>
@@ -37,7 +37,7 @@
     data () {
       return {
         user: {
-          name: '',
+          username: '',
           password: ''
         },
         msg: '',
@@ -46,32 +46,35 @@
     },
     methods: {
       onSubmit() {
-        this.axios.post('/api/login', this.user)
+        console.log(this.user)
+        this.axios.post('/login', this.user)
         .then(response => {
-          const responseData = response.data
-          if (responseData.code) {
+          if (response.data.status) {
+            document.body.style.overflow = 'hidden'
             this.$store.state.offline = false
-            this.$store.state.username = this.user.name
+            this.$store.state.username = this.user.username
             this.successful = true
             const redirect = this.$route.query.redirect
-            console.log(redirect)
             if (redirect) {
               setTimeout(() => {
                 this.$router.push({ path: redirect })
+                document.body.style.overflow = 'auto'
               }, 2000);
               return
             }
-            if (this.user.name === 'admin') {
+            if (this.user.username === 'admin') {
               setTimeout(() => {
-                this.$router.push({ path: '/analysis' })
+                this.$router.push({ path: '/admin' })
+                document.body.style.overflow = 'auto'
               }, 2000);
             } else {
               setTimeout(() => {
-                this.$router.push({ path: '/' })
+                this.$router.push({ path: '/profile' })
+                document.body.style.overflow = 'auto'
               }, 2000);
             }
           } else {
-            this.msg = responseData.msg
+            this.msg = response.data.msg
           }
         })
       }

@@ -18,11 +18,17 @@
         
       }
     },
+    mounted () {
+      
+    },
     methods: {
 
     },
     components: {
       Yes
+    },
+    destroyed () {
+      
     }
   }
 </script>

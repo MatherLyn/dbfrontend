@@ -5,16 +5,16 @@
     </div>
     <div class="form-item">
       <label for="departure">出发地</label>
-      <el-input type="text" id="departure" prefix-icon="el-icon-location-outline" class="smaller-input" v-model="formData.departure"></el-input>
+      <el-input type="text" id="departure" prefix-icon="el-icon-location-outline" class="smaller-input" v-model="ticket.departure"></el-input>
     </div>
     <div class="form-item">
       <label for="destination">目的地</label>
-      <el-input type="text" id="destination" prefix-icon="el-icon-location-outline" class="smaller-input" v-model="formData.destination"></el-input>
+      <el-input type="text" id="destination" prefix-icon="el-icon-location-outline" class="smaller-input" v-model="ticket.destination"></el-input>
     </div>
     <div class="form-item" style="overflow: hidden;">
       <label for="startTime">出发时间</label>
       <el-date-picker
-        v-model="formData.startTime"
+        v-model="start_time"
         align="right"
         type="date"
         placeholder="选择日期"
@@ -22,7 +22,7 @@
         id="startTime">
       </el-date-picker>
     </div>
-    <div class="form-item" style="margin-bottom: 0;" v-show="msg">
+    <div class="form-item" style="margin-bottom: 20px;" v-show="msg">
       <span class="tips">* </span><span>{{msg}}</span>
     </div>
     <div class="form-item">
@@ -35,15 +35,16 @@
   export default {
     data () {
       return {
-        formData: {
+        start_time: '',
+        ticket: {
           departure: '',
           destination: '',
-          startTime: ''
+          start_time: ''
         },
         msg: '',
         pickerOptions: {
           disabledDate(time) {
-            return time.getTime() > Date.now();
+            return time.getTime() < Date.now() - 3600 * 24 * 1000;
           },
           shortcuts: [{
             text: '今天',
@@ -70,7 +71,21 @@
     },
     methods: {
       onSubmit () {
-        
+        this.ticket.start_time = document.querySelector('#startTime').value
+        if (!this.ticket.departure || !this.ticket.destination || !this.ticket.start_time) {
+          this.msg = '信息填充不完整'
+          return
+        }
+        console.log(this.ticket)
+        this.axios.post('/findtickets', this.ticket)
+        .then(response => {
+          const data = response.data
+          if (data.length) {
+            this.$store.state.foundTickets = data
+            this.$router.push({ name: 'foundTicket' })
+            console.log(this.$store.state.foundTickets)
+          }
+        })
       }
     }
   }

@@ -1,21 +1,25 @@
 <template>
   <div>
-    <el-tabs v-model="activeName" @tab-click="handleClick">
+    <el-tabs v-model="activeName" @tab-click="handleClick" v-if="$store.state.username == 'admin'">
       <el-tab-pane label="订单管理" name="order">
-        <List :type="1"/>
+        <OrderList />
       </el-tab-pane>
       <el-tab-pane label="车票管理" name="ticket">
-        <List :type="2"/>
+        <TicketList />
       </el-tab-pane>
       <el-tab-pane label="用户管理" name="user">
-        <List :type="3"/>
+        <UserList />
       </el-tab-pane>
     </el-tabs>
+    <div v-else>对不起，您不是管理员，没有权限访问此页面</div>
   </div>
 </template>
 
 <script>
-  import List from './List'
+  import OrderList from './OrderList'
+  import ProfileList from './ProfileList'
+  import TicketList from './TicketList'
+  import UserList from './UserList'
   export default {
     data () {
       return {
@@ -28,7 +32,10 @@
       }
     },
     components: {
-      List
+      OrderList,
+      ProfileList,
+      TicketList,
+      UserList
     }
   }
 </script>

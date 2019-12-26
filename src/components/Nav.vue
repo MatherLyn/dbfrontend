@@ -10,7 +10,7 @@
     :default-active="'/'"
     >
       <el-menu-item index="/">首页</el-menu-item>
-      <el-menu-item index="/ticketList">购买车票</el-menu-item>
+      <el-menu-item index="/foundTicket">购买车票</el-menu-item>
       <el-menu-item index="/profile">个人中心</el-menu-item>
       <el-menu-item index="/admin">管理员中心</el-menu-item>
     </el-menu>

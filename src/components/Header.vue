@@ -14,9 +14,13 @@
           </div>
         </div>
       </div>
-      <div class="profile">
+      <div class="profile" v-if="$store.state.offline">
         <span class="login" @click="$router.push({ path: '/login' })">登录</span>
         <span class="register" @click="$router.push({ path: '/register' })">注册</span>
+      </div>
+      <div class="profile" v-else>
+        <span style="margin-right: 20px;">你好，{{ $store.state.username }}</span>
+        <span class="login" @click="doLogout">注销</span>
       </div>
     </div>
   </div>
@@ -30,7 +34,15 @@
       }
     },
     methods: {
-      
+      doLogout () {
+        if (confirm('确定要注销吗？')) {
+          this.$store.state.offline = true
+          this.$store.state.username = ''
+          alert('注销成功')
+        } else {
+          alert('保持登录状态')
+        }
+      }
     }
   }
 </script>

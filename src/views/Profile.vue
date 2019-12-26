@@ -1,11 +1,11 @@
 <template>
   <div>
-    <List :type="4" />
+    <ProfileList />
   </div>
 </template>
 
 <script>
-  import List from '../components/List'
+  import ProfileList from '../components/ProfileList'
   export default {
     data () {
       return {
@@ -16,7 +16,7 @@
 
     },
     components: {
-      List
+      ProfileList
     }
   }
 </script>

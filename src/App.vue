@@ -78,8 +78,31 @@
   .el-button {
     width: 100% !important;
   }
+
+  .el-button--small {
+    width: fit-content !important;
+  }
+
+  .el-tabs__content {
+    position: static !important;
+  }
+
+  .el-menu-item {
+    border-bottom: none !important;
+  }
   
   .form-item {
     margin-bottom: 20px;
+  }
+
+  .msg {
+    font-size: 14px;
+    margin-top: 10px;
+    margin-bottom: -20px;
+    color: #333;
+  }
+
+  .error {
+    color: red;
   }
 </style>
